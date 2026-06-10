@@ -32,30 +32,11 @@
 - 高级事件和事件链；
 - 玩家事件选择。
 
-## 验收标准
+## 业务规则
 
-- 所有事件概率配置合法且总和可校验；
-- 单回合不会同时触发多个互斥事件；
-- 宝物和修炼失败正确改变角色状态；
-- 相同配置和随机种子产生相同事件序列；
-- 大样本运行时可统计每类事件次数。
-
-## 实现方向
-
-```rust
-enum EventKind {
-    None,
-    Treasure,
-    CultivationFailure,
-    Combat,
-}
-
-enum EventResult {
-    None,
-    Treasure { spirit_stones: u32, herbs: u32 },
-    CultivationFailure { experience_reverted: u32 },
-    CombatPending,
-}
-```
-
-随机种子属于模拟配置，随机数生成器由 `Simulation` 统一持有。事件模块只使用传入的随机源；权重选择逻辑需要单独测试。
+1. 每次修炼完成后进行一次事件判断。
+2. 每次判断最多产生一个事件。
+3. 宝物事件增加灵石或草药。
+4. 修炼失败事件撤销本回合的修炼收益。
+5. 战斗事件在本步骤只记录为待结算。
+6. 相同配置和随机种子必须产生相同事件序列。

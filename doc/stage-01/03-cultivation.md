@@ -30,34 +30,11 @@
 - 升级和属性成长；
 - 玩家选择修炼类型。
 
-## 验收标准
+## 业务规则
 
-- 每回合最多执行一次修炼；
-- 修炼类型只可能来自定义列表；
-- 灵力值和经验变化与对应配置一致；
-- 灵力值不足时状态保持合法；
-- 固定随机种子时修炼序列可以复现。
-
-## 实现方向
-
-```rust
-enum CultivationType {
-    QiRefining,
-    FoundationEstablishment,
-    GoldenCore,
-}
-
-struct CultivationRule {
-    mp_cost: u32,
-    experience_gain: u32,
-}
-
-struct CultivationResult {
-    cultivation_type: CultivationType,
-    mp_spent: u32,
-    experience_gained: u32,
-    succeeded: bool,
-}
-```
-
-执行顺序：选择修炼类型、检查灵力、应用消耗和收益、返回结构化结果、记录时间线。修炼规则集中配置，规则层不直接打印日志。
+1. 每回合最多选择一种修炼方式。
+2. 选择修炼方式后先检查灵力值是否足够。
+3. 灵力值足够时，扣除对应灵力并增加对应经验。
+4. 灵力值不足时，本回合修炼失败，角色状态保持合法。
+5. 日志必须记录修炼类型、灵力消耗、经验收益或失败原因。
+6. 固定随机种子时，修炼选择顺序应当一致。

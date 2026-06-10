@@ -23,30 +23,11 @@
 - 等级上限后的玩法；
 - 玩家分配属性点。
 
-## 验收标准
+## 业务规则
 
-- 经验不足时不升级；
-- 经验达到阈值时准确升级；
-- 超额经验得到保留；
-- 一次获得大量经验时可连续升级；
-- 属性提升范围符合配置；
-- 固定随机种子时成长结果可复现。
-
-## 实现方向
-
-```rust
-struct GrowthRule {
-    required_experience: u32,
-    attribute_increase_min: u32,
-    attribute_increase_max: u32,
-}
-
-struct LevelUpResult {
-    from_level: u32,
-    to_level: u32,
-    remaining_experience: u32,
-    attribute_changes: Attributes,
-}
-```
-
-每回合结算后循环检查升级条件，因此一次可以连续升级。升级阈值集中管理，超额经验保留，属性成长使用统一随机源。
+1. 每回合其他结算完成后检查升级条件。
+2. 经验达到当前等级要求时自动升级。
+3. 升级需要扣除对应经验，超额经验继续保留。
+4. 经验足够时允许连续提升多个等级。
+5. 每次升级随机提升体质、灵力属性或悟性。
+6. 固定随机种子时，属性成长结果应当一致。
