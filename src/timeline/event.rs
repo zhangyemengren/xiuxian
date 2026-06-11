@@ -1,17 +1,41 @@
+//! 可输出的模拟时间线事件。
+
 use std::{
     fmt::Display,
     io::{self, Write},
 };
 
+/// 模拟循环中按顺序产生的时间线事件。
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum TimelineEvent {
-    RoundStarted { round: u64 },
-    TimeAdvanced { year: u64 },
-    RoundFinished { round: u64 },
-    SimulationFinished { rounds: u64 },
+    /// 一个新回合已经开始。
+    RoundStarted {
+        /// 从 `1` 开始的回合编号。
+        round: u64,
+    },
+    /// 世界时间已经推进到指定年份。
+    TimeAdvanced {
+        /// 推进后的世界年份。
+        year: u64,
+    },
+    /// 当前回合已经结束。
+    RoundFinished {
+        /// 已结束的回合编号。
+        round: u64,
+    },
+    /// 模拟已经正常结束。
+    SimulationFinished {
+        /// 模拟实际完成的总回合数。
+        rounds: u64,
+    },
 }
 
 impl TimelineEvent {
+    /// 将事件的显示文本及换行符写入目标。
+    ///
+    /// # Errors
+    ///
+    /// 当目标无法接受完整事件文本时，返回对应的 I/O 错误。
     pub fn write_to(&self, output: &mut impl Write) -> io::Result<()> {
         writeln!(output, "{self}")
     }
