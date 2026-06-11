@@ -1,11 +1,6 @@
-pub mod app;
-pub mod simulation;
-pub mod time_line;
-pub mod world;
+use std::io;
+use xiuxian::app::App;
 
-use app::App;
-
-fn main() {
-    let app = App::new();
-    app.run();
+fn main() -> io::Result<()> {
+    App.run()
 }

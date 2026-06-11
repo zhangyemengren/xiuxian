@@ -1,16 +1,14 @@
 use crate::simulation::{Simulation, SimulationConfig};
-use std::time::Duration;
+use std::{io, time::Duration};
 
+#[derive(Default)]
 pub struct App;
 
 impl App {
-    pub fn new() -> Self {
-        Self
-    }
-
-    pub fn run(&self) {
+    pub fn run(&self) -> io::Result<()> {
         let config = SimulationConfig::infinite(Duration::from_secs(1));
         let mut simulation = Simulation::new(config);
-        simulation.run();
+        simulation.run()?;
+        Ok(())
     }
 }
